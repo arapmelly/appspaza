@@ -1,0 +1,1 @@
+/var/www/html/trendmaster/app/views/accounts/show.blade.php

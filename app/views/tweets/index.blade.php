@@ -1,0 +1,1 @@
+/var/www/html/trendmaster/app/views/tweets/index.blade.php
