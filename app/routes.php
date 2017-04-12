@@ -122,7 +122,7 @@ Route::get('callback', function(){
 
 Route::get('regionscreate', function(){
 
-    $regions = Twitter::trendsAvailable();
+    $regions = Twitt::getTrendsAvailable();
 
     foreach ($regions as $region) {
         
