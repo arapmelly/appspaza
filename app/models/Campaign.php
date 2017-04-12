@@ -10,14 +10,19 @@ class Campaign extends \Eloquent {
 	// Don't forget to fill this array
 	protected $fillable = [];
 
+
+	public function user(){
+		return $this->belongsTo('User');
+	}
+
+
 	public function accounts(){
-		return $this->belongsToMany('Account');
-	}
+        return $this->hasMany('Account');
+    }
 
 
-	public function timelines(){
-
-		return $this->hasMany('Timeline');
-	}
+    public function tweets(){
+        return $this->hasMany('Tweet');
+    }
 
 }

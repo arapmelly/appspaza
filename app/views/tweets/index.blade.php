@@ -1,1 +1,1 @@
-/var/www/html/trendmaster/app/views/tweets/index.blade.php
+/var/www/html/appspaza/app/views/tweets/index.blade.php

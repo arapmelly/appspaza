@@ -81,7 +81,7 @@ class TweetsController extends \BaseController {
 
 		$campaign_id = Input::get('campaign_id');
 
-		return Redirect::to('campaigns/show/'.$campaign_id);
+		return Redirect::to('tweets/show/'.$campaign_id);
 	}
 
 	/**
@@ -92,9 +92,10 @@ class TweetsController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		$tweet = Tweet::findOrFail($id);
+		$campaign = Campaign::findOrFail($id);
+		$tweets = $campaign->tweets;
 
-		return View::make('tweets.show', compact('tweet'));
+		return View::make('tweets.show', compact('tweets', 'campaign'));
 	}
 
 	/**
@@ -200,9 +201,9 @@ class TweetsController extends \BaseController {
 	public function tweet($id){
 
 		$tweet = Tweet::find($id);
-
+                $acc = DB::table('accounts')->first();
 		//manually assign account
-		$account = Account::find(4);
+		$account = Account::find($acc->id);
 
 		//post tweet
 		Tweet::postTweet($tweet, $account);

@@ -1,0 +1,1 @@
+/var/www/html/sickbet/app/views/payments/index.blade.php

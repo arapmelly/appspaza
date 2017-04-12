@@ -1,1 +1,1 @@
-/var/www/html/trendmaster/app/views/accounts/create.blade.php
+/var/www/html/appspaza/app/views/accounts/create.blade.php

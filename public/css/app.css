@@ -5221,3 +5221,7 @@ a.text-#000000:hover {
     background-color: #7266ba;
   }
 }
+
+.banner {
+  background-image: url('img/banner-soccer.jpg');
+}

@@ -9,7 +9,7 @@ class AccountsController extends \BaseController {
 	 */
 	public function index()
 	{
-		$accounts = Account::all();
+		$accounts = Confide::user()->accounts;
 
 		return View::make('accounts.index', compact('accounts'));
 	}
@@ -26,7 +26,6 @@ class AccountsController extends \BaseController {
     	// Redirect to twitter
     	Twitter::oAuthAuthenticate(array_get($tokens, 'oauth_token'));
     	exit;
-
 	}
 
 	/**
@@ -108,9 +107,5 @@ class AccountsController extends \BaseController {
 
 		return Redirect::route('accounts.index');
 	}
-
-
-
-	
 
 }

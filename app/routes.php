@@ -14,14 +14,40 @@
 Route::get('/', function()
 {
 	if(Confide::user()){
-        //$campaigns = Camapign::all();
-		//return View::make('dashboard');
-        return Redirect::to('campaigns');
+        if(Confide::user()->user_type == 'client'){
+
+
+          return Redirect::to('userdash');
+        	
+        } 
+
+        if(Confide::user()->user_type == 'admin'){
+
+        	return View::make('admindash');
+        } 
+
 	} else {
-		return View::make('index');
+
+   
+		return View::make('login');
 	}
 	
 });
+
+
+Route::get('userdash', function(){
+
+    
+ $campaigns = Confide::user()->campaigns;
+    
+      return View::make('userdash', compact('campaigns'));
+
+    
+
+});
+
+
+
 
 //
 
@@ -37,12 +63,38 @@ Route::get('users/reset_password/{token}', 'UsersController@resetPassword');
 Route::post('users/reset_password', 'UsersController@doResetPassword');
 Route::get('users/logout', 'UsersController@logout');
 
+Route::get('users', function(){
+
+  $users = User::all();
+
+  return View::make('users.index', compact('users'));
+
+});
+
+
+
+
+Route::get('twitterlogin', function(){
+	
+		$tokens = Twitter::oAuthRequestToken();
+
+    	// Redirect to twitter
+    	Twitter::oAuthAuthenticate(array_get($tokens, 'oauth_token'));
+    	exit;
+
+});
+
+
 
 Route::resource('accounts', 'AccountsController');
 Route::get('accounts/create', 'AccountsController@create');
-Route::get('accountscallback', function(){
+Route::get('accounts/edit/{id}', 'AccountsController@edit');
+Route::post('accounts/update/{id}', 'AccountsController@update');
+Route::get('accounts/destroy/{id}', 'AccountsController@destroy');
 
-	// Oauth token
+Route::get('callback', function(){
+
+  // Oauth token
     $token = Input::get('oauth_token');
 
     // Verifier token
@@ -54,10 +106,11 @@ Route::get('accountscallback', function(){
     
 
     $account = new Account;
-    $account->user_id = $accessToken['user_id'];
-    $account->username = $accessToken['screen_name'];
+    $account->user_number = $accessToken['user_id'];
+    $account->screen_name = $accessToken['screen_name'];
     $account->access_token = $accessToken['oauth_token'];
-    $account->access_token_secret = $accessToken['oauth_token_secret'];
+    $account->access_secret = $accessToken['oauth_token_secret'];
+    $account->user_id = Session::get('user')->id;
     $account->save();
 
     return Redirect::to('accounts');
@@ -66,87 +119,6 @@ Route::get('accountscallback', function(){
 
 
 
-
-Route::get('trends', function(){
-
-   
-
-    // Get tweets
-    $availables = Region::all();
-    
-    $trendings = array();
-   
-
-   return View::make('trends.index', compact('availables', 'trendings'));
-
-});
-
-
-
-Route::post('trends', function(){
-
-    $availables = Region::all();
-
-    $woeid = Input::get('region');
-
-    // Get tweets
-    $trends = Twitter::trendsPlace($woeid);
-    $trendings = $trends[0]['trends'];
-    
- /* echo '<pre>';
-   print_r($trends[0]['trends']);*/
-
-   return View::make('trends.trends', compact('trendings', 'availables'));
-
-});
-
-
-
-Route::resource('campaigns', 'CampaignsController');
-Route::get('campaigns/show/{id}', 'CampaignsController@show');
-Route::get('campaignsstart/{id}', 'CampaignsController@start');
-Route::get('campaignsstop/{id}', 'CampaignsController@stop');
-
-
-Route::resource('timelines', 'TimelinesController');
-Route::get('process', 'TimelinesController@process');
-
-
-Route::resource('regions', 'RegionsController');
-
-Route::resource('tweets', 'TweetsController');
-Route::get('tweets/create/{id}', 'TweetsController@create');
-Route::get('tweets/edit/{id}', 'TweetsController@edit');
-Route::get('tweets/destroy/{id}', 'TweetsController@destroy');
-Route::get('tweet/{id}', 'TweetsController@tweet');
-Route::get('tweetsslot/{id}', 'TweetsController@slottweets');
-Route::post('tweets/update/{id}', 'TweetsController@update');
-
-
-Route::get('shift', function(){
-
-    $seconds = 480;
-
-    $start_time = Carbon::today()->toTimeString();
-
-     echo $start_time. '<br/>';
-
-     $ints = (24 * 3600)/ $seconds;
-
-     for($i = 1; $i< $ints; $i++){
-
-        $next_time = Carbon::today()->addSeconds($seconds)->toTimeString();
-
-        $seconds = $seconds + 480;
-
-        echo $next_time.'<br/>';
-
-
-     }
-
-    
-   
-});
 
 Route::get('regionscreate', function(){
 
@@ -164,38 +136,55 @@ Route::get('regionscreate', function(){
 });
 
 
-Route::get('testtweet', function(){
 
-    $account = Account::find(5);
+Route::resource('campaigns', 'CampaignsController');
+Route::get('campaigns/create/{id}', 'CampaignsController@create');
+Route::get('campaigns/edit/{id}', 'CampaignsController@edit');
+Route::post('campaigns/update/{id}', 'CampaignsController@update');
+Route::get('campaigns/destroy/{id}', 'CampaignsController@destroy');
+Route::get('campaigns/show/{id}', 'CampaignsController@show');
+Route::get('campaignaccounts/{id}', 'CampaignsController@accounts');
+Route::post('campaignsaddaccount', 'CampaignsController@addaccounts');
+Route::post('campaignsremoveaccount', 'CampaignsController@removeaccounts');
 
-    //Get the Users token & from your User Table (or where ever you stored them)
-$token = $account->access_token;
-$secret = $account->access_token_secret;
 
-//This line resets the token & secret with the users        
-Twitt::reconfig(['token' => $token, 'secret' => $secret]);
+Route::resource('tweets', 'TweetsController');
+Route::get('tweets/create/{id}', 'TweetsController@create');
+Route::get('tweets/edit/{id}', 'TweetsController@edit');
+Route::post('tweets/update/{id}', 'TweetsController@update');
+Route::get('tweets/destroy/{id}', 'TweetsController@destroy');
+Route::get('tweets/show/{id}', 'TweetsController@show');
 
-//This line posts the tweet as the user
-//Twitt::postTweet(['status' => 'test', 'format' => 'json']); 
 
-$tweet = Tweet::find(12);
-$filename = $tweet->media_url;
 
- $uploaded_media = Twitt::uploadMedia(['media' => file_get_contents(public_path('/uploads/'.$filename))]);
- Twitt::postTweet(['status' => $tweet->tweet, 'media_ids' => $uploaded_media->media_id_string]);
-    
+
+
+
+
+
+
+
+Route::get('expiresubscriptions', function(){
+
+$users = User::where('is_expired', '=', false)->get();
+
+foreach ($users as $user) {
+  
+  if(User::subscriptionExpired($user)){
+    $usr = User::find($user->id);
+    $usr->is_expired = true;
+    $usr->update();
+  }
+
+}
 
 });
 
 
-Route::get('listen', function(){
 
-    $timeline = Timeline::find(899);
-             $date = Carbon::today()->addSeconds(20);
 
-            Queue::later($date, 'TweetService', array('timeline' => $timeline));
 
-});
+
 
 
 

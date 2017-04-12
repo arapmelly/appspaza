@@ -21,10 +21,9 @@ class CampaignsController extends \BaseController {
 	 */
 	public function create()
 	{
-		$availables = Region::all();
+		$regions = Region::all();
 
-		$accounts = Account::all();
-		return View::make('campaigns.create', compact('availables', 'accounts'));
+		return View::make('campaigns.create', compact('regions'));
 	}
 
 	/**
@@ -41,28 +40,16 @@ class CampaignsController extends \BaseController {
 			return Redirect::back()->withErrors($validator)->withInput();
 		}
 
-	$campaign = new Campaign;
-	$campaign->name = Input::get('name');
-	$campaign->target_region = Input::get('target_region');
-	$campaign->time_interval = Input::get('time_interval');
-	$campaign->type = Input::get('type');
-	$campaign->save();
+		$campaign = new Campaign;
+		$campaign->name = Input::get('name');
+		$campaign->start_date = Input::get('start_date');
+		$campaign->end_date = Input::get('end_date');
+		$campaign->location = Input::get('location');
+		$campaign->type = Input::get('type');
+		$campaign->user_id = Session::get('user')->id;
+		$campaign->save();
 
-	//save accounts
-
-	$accounts = Input::get('accounts');
-
-
-
-	$campain = Campaign::find($campaign->id);
-
-	$campain->accounts()->sync($accounts);
-
-	//geneate timeline with accounts and time slots.
-	Timeline::generateTimeline($campain);
-
-
-		return Redirect::route('campaigns.index');
+		return Redirect::to('/')->with('notice', 'campaign has been created');
 	}
 
 	/**
@@ -75,11 +62,7 @@ class CampaignsController extends \BaseController {
 	{
 		$campaign = Campaign::findOrFail($id);
 
-		$timelines = $campaign->timelines;
-
-		$tweets = DB::table('tweets')->where('campaign_id', '=', $id)->get();
-
-		return View::make('campaigns.show', compact('campaign', 'timelines', 'tweets'));
+		return View::make('campaigns.show', compact('campaign'));
 	}
 
 	/**
@@ -131,23 +114,47 @@ class CampaignsController extends \BaseController {
 	}
 
 
-	public function start($id)
+
+	public function accounts($id)
 	{
 		$campaign = Campaign::find($id);
-		$campaign->is_published = true;
-		$campaign->update();
 
-		return Redirect::to('campaigns/show/'.$id);
+		$campaignaccounts = DB::table('account_campaign')->where('campaign_id', '=', $id)->get();
+
+		$accounts = Confide::user()->accounts;
+
+		return View::make('campaigns.accounts', compact('accounts', 'campaign', 'campaignaccounts'));
 	}
 
 
-	public function stop($id)
-	{
-		$campaign = Campaign::find($id);
-		$campaign->is_published = false;
-		$campaign->update();
 
-		return Redirect::to('campaigns/show/'.$id);
+	public function addaccounts()
+	{
+		
+		$campaign_id = Input::get('campaign_id');
+		$account_id = Input::get('account_id');
+
+		DB::table('account_campaign')->insert(
+			array(
+				'account_id'=>$account_id,
+				'campaign_id'=>$campaign_id,
+				'type'=>'account'
+			));
+
+		return Redirect::back()->with('info', 'account has been added');
+	}
+
+
+
+	public function removeaccounts()
+	{
+		
+		$campaign_id = Input::get('campaign_id');
+		$account_id = Input::get('account_id');
+
+		DB::table('account_campaign')->where('account_id', '=', $account_id)->where('campaign_id', '=', $campaign_id)->delete();
+
+		return Redirect::back()->with('info', 'account has been removed');
 	}
 
 }

@@ -5,17 +5,9 @@
     <div class="bg-light dk">
       <div class="containe">
         <div class="row padder-v m-t" style="margin:10px">
-          <div class="col-xs-8">
-            <ul class="list-inline">
-              <li><a href="#">Sales</a></li>
-              <li><a href="#">About</a></li>
-              <li><a href="#">API</a></li>
-              <li><a href="#">Contact us</a></li>
-              <li><a href="#">Job</a></li>
-            </ul> 
-          </div>
-          <div class="col-xs-4 text-right">
-            TrendMaster&trade; &copy; {{date('Y')}}
+         
+          <div class="col-xs-4 ">
+            Spaza &copy; {{date('Y')}}. Powered by <a href="www.spaza.co.ke">Spaza Communications</a> 
           </div>
         </div>
       </div>

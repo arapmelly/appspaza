@@ -10,25 +10,14 @@ class Account extends \Eloquent {
 	// Don't forget to fill this array
 	protected $fillable = [];
 
-	public function campaigns(){
-		return $this->belongsToMany('Campaign');
+
+	public function user(){
+		return $this->belongsTo('User');
 	}
 
 
-	public function timelines(){
-
-		return $this->hasMany('Timeline');
-	}
-
-
-	public static function getName($id){
-
-
-		$account = Account::find($id);
-		
-		return $account->username;
-	}
-
-	
+	 public function campaigns(){
+        return $this->belongsToMany('Campaign');
+    }
 
 }

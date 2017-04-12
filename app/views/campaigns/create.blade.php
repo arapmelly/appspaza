@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('layouts.user')
 @section('content')
 
 
@@ -28,12 +28,26 @@
 
         </div>
 
+
+        <div class="form-group">
+          <label>Start Date</label>
+          <input type="date" name="start_date" class="form-control" min="{{date('Y-m-d')}}" required>
+
+        </div>
+
+
+        <div class="form-group">
+          <label>End Date</label>
+          <input type="date" name="end_date" class="form-control" min="{{date('Y-m-d')}}" required>
+
+        </div>
+
       
 
         <div class="form-group">
           <label>Target Region</label>
-          <select class="form-control" name="target_region" >
-          @foreach($availables as $region)
+          <select class="form-control" name="location" >
+          @foreach($regions as $region)
           <option value="{{$region->woeid}}">{{$region->name}}, {{$region->country}}</option>
           @endforeach
         </select>
@@ -54,24 +68,9 @@
         </div>
 
 
-        <div class="form-group">
-          <label>Time Intervals (seconds)</label>
-          <input type="text" name="time_interval" class="form-control" required>
+        
 
-        </div>
-
-
-        <div class="form-group">
-            
-            @foreach($accounts as $account)
-            <label class="checkbox-inline i-checks">
-              <input type="checkbox" name="accounts[]" value="{{$account->id}}"><i></i> {{$account->username}}
-            </label>
-            @endforeach
-            
-
-        </div>
-
+        
 
 
          <div class="form-group">
