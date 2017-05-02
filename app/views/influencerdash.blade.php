@@ -1,4 +1,4 @@
-@extends('layouts.user')
+@extends('layouts.influence')
 @section('content')
 
 <div class="bg-light">
@@ -48,9 +48,9 @@
     <div class="thumbnail">
       <img src="img/twitlogo.jpg"  alt="...">
       <div class="caption" style="text-align:center">
-        <h4>{{'@'.$account->screen_name}}</h4>
+        <h4>{{$account->screen_name}}</h4>
        
-        <p><a href="{{URL::to('accounts/show/'.$account->id)}}" class="btn btn-info" role="button">Manage Tweets</a> </p> 
+        
       </div>
     </div>
   </div>

@@ -58,7 +58,8 @@
          <div class="form-group">
           <label>Campaign Type</label>
           <select class="form-control" name="type" >
-     
+          
+         <!--  <option value="retweet">Retweet</option> -->
           <option value="hashtag">Hashtag</option>
            <option value="trend">Trend</option>
     

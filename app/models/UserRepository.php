@@ -21,11 +21,10 @@ class UserRepository
     {
         $user = new User;
 
-        $user->company    = array_get($input, 'company');
         $user->email    = array_get($input, 'email');
         $user->password = array_get($input, 'password');
-        $user->user_type = 'client';
-        $user->subscribed_package = array_get($input, 'subscribed_package');
+        $user->user_type = array_get($input, 'user_type');
+    
 
         // The password confirmation will be removed from model
         // before saving. This field will be used in Ardent's

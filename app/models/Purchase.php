@@ -1,6 +1,6 @@
 <?php
 
-class Payment extends \Eloquent {
+class Purchase extends \Eloquent {
 
 	// Add your validation rules here
 	public static $rules = [
@@ -9,5 +9,12 @@ class Payment extends \Eloquent {
 
 	// Don't forget to fill this array
 	protected $fillable = [];
+
+
+
+	public static function approve($purchase){
+
+		return false;
+	}
 
 }

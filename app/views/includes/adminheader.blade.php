@@ -4,7 +4,7 @@
         <button class="btn btn-link visible-xs pull-right m-r" type="button" data-toggle="collapse" data-target=".navbar-collapse">
           <i class="fa fa-bars"></i>
         </button>
-        <a href="{{URL::to('/')}}" class="navbar-brand m-r-lg"><img src="img/logo.png" class="m-r-sm hide"><span class="h3 font-bold">SlickTips&trade;</span></a>
+        <a href="{{URL::to('/')}}" class="navbar-brand m-r-lg"><img src="img/logo.png" class="m-r-sm hide"><span class="h3 font-bold">TrendMaster&trade;</span></a>
       </div>
       <div class="collapse navbar-collapse">
 
@@ -14,31 +14,25 @@
           </li> -->
 
           <li>
-            <a href="{{URL::to('predictions')}}" data-ride="scroll">Predictions</a>
+            <a href="{{URL::to('/')}}" data-ride="scroll">Purchases</a>
           </li>
 
           <li>
-            <a href="{{URL::to('matches')}}" data-ride="scroll">Matches</a>
+            <a href="{{URL::to('adminsettlements')}}" data-ride="scroll">Settlements</a>
           </li>
 
 
            <li>
-            <a href="{{URL::to('categories')}}" data-ride="scroll">Categories</a>
+            <a href="{{URL::to('influencers')}}" data-ride="scroll">Influencers</a>
           </li>
 
 
            <li>
-            <a href="{{URL::to('packs')}}" data-ride="scroll">Packages</a>
+            <a href="{{URL::to('advertisers')}}" data-ride="scroll">Advertisers</a>
           </li>
           
 
-          <li>
-            <a href="{{URL::to('users')}}" data-ride="scroll">Clients</a>
-          </li>
-
-           <li>
-            <a href="{{URL::to('payments')}}" data-ride="scroll">Payments</a>
-          </li>
+         
 
           
         </ul>

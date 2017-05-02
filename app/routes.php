@@ -21,9 +21,17 @@ Route::get('/', function()
         	
         } 
 
-        if(Confide::user()->user_type == 'admin'){
+        if(Confide::user()->user_type == 'influencer'){
 
-        	return View::make('admindash');
+
+          return Redirect::to('influencerdash');
+            
+        } 
+
+        if(Confide::user()->user_type == 'admin'){
+            $purchases = Purchase::where('is_approved', '=', false)->orderBy('created_at', 'DESC')->get();
+
+        	return View::make('admindash', compact('purchases'));
         } 
 
 	} else {
@@ -38,9 +46,21 @@ Route::get('/', function()
 Route::get('userdash', function(){
 
     
- $campaigns = Confide::user()->campaigns;
+ $accounts = Confide::user()->accounts;
     
-      return View::make('userdash', compact('campaigns'));
+      return View::make('userdash', compact('accounts'));
+
+    
+
+});
+
+
+Route::get('influencerdash', function(){
+
+    
+ $accounts = Confide::user()->accounts;
+    
+      return View::make('influencerdash', compact('accounts'));
 
     
 
@@ -91,8 +111,9 @@ Route::get('accounts/create', 'AccountsController@create');
 Route::get('accounts/edit/{id}', 'AccountsController@edit');
 Route::post('accounts/update/{id}', 'AccountsController@update');
 Route::get('accounts/destroy/{id}', 'AccountsController@destroy');
+Route::get('accounts/show/{id}', 'AccountsController@show');
 
-Route::get('callback', function(){
+Route::get('accountscallback', function(){
 
   // Oauth token
     $token = Input::get('oauth_token');
@@ -102,6 +123,7 @@ Route::get('callback', function(){
 
     // Request access token
     $accessToken = Twitter::oAuthAccessToken($token, $verifier);
+    
 
     
 
@@ -113,7 +135,7 @@ Route::get('callback', function(){
     $account->user_id = Session::get('user')->id;
     $account->save();
 
-    return Redirect::to('accounts');
+    return Redirect::to('/');
 
 });
 
@@ -137,48 +159,53 @@ Route::get('regionscreate', function(){
 
 
 
-Route::resource('campaigns', 'CampaignsController');
-Route::get('campaigns/create/{id}', 'CampaignsController@create');
-Route::get('campaigns/edit/{id}', 'CampaignsController@edit');
-Route::post('campaigns/update/{id}', 'CampaignsController@update');
-Route::get('campaigns/destroy/{id}', 'CampaignsController@destroy');
-Route::get('campaigns/show/{id}', 'CampaignsController@show');
-Route::get('campaignaccounts/{id}', 'CampaignsController@accounts');
-Route::post('campaignsaddaccount', 'CampaignsController@addaccounts');
-Route::post('campaignsremoveaccount', 'CampaignsController@removeaccounts');
+
+Route::resource('purchases', 'PurchasesController');
+Route::get('purchases/create/{id}', 'PurchasesController@create');
+Route::post('purchases/update/{id}', 'PurchasesController@update');
+
+Route::get('purchasesapprove/{id}', 'PurchasesController@approve');
 
 
-Route::resource('tweets', 'TweetsController');
-Route::get('tweets/create/{id}', 'TweetsController@create');
-Route::get('tweets/edit/{id}', 'TweetsController@edit');
-Route::post('tweets/update/{id}', 'TweetsController@update');
-Route::get('tweets/destroy/{id}', 'TweetsController@destroy');
-Route::get('tweets/show/{id}', 'TweetsController@show');
+Route::resource('settlements', 'SettlementsController');
+Route::get('settlements/create', 'SettlementsController@create');
+Route::post('settlements/update/{id}', 'SettlementsController@update');
 
 
+Route::get('adminsettlements', function(){
 
+    $settlements = Settlement::orderBy('created_at', 'DESC')->get();
 
-
-
-
-
-
-
-Route::get('expiresubscriptions', function(){
-
-$users = User::where('is_expired', '=', false)->get();
-
-foreach ($users as $user) {
-  
-  if(User::subscriptionExpired($user)){
-    $usr = User::find($user->id);
-    $usr->is_expired = true;
-    $usr->update();
-  }
-
-}
+    return View::make('settlements.adminsettlements', compact('settlements'));
 
 });
+
+
+Route::get('influencers', function(){
+
+    $users = User::where('user_type', '=', 'influencer')->orderBy('created_at', 'DESC')->get();
+
+    return View::make('users.influencers', compact('users'));
+
+});
+
+
+Route::get('advertisers', function(){
+
+    $users = User::where('user_type', '=', 'client')->orderBy('created_at', 'DESC')->get();
+
+    return View::make('users.advertisers', compact('users'));
+
+});
+
+
+
+
+
+
+
+
+
 
 
 

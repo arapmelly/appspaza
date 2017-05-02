@@ -6,8 +6,8 @@
       <div class="containe">
         <div class="row padder-v m-t" style="margin:10px">
          
-          <div class="col-xs-4 ">
-            Spaza &copy; {{date('Y')}}. Powered by <a href="www.spaza.co.ke">Spaza Communications</a> 
+          <div class="col-xs-12 ">
+            TrendMaster&trade; &copy; {{date('Y')}}. Powered by <a href="www.spaza.co.ke">Spaza Communications</a> 
           </div>
         </div>
       </div>

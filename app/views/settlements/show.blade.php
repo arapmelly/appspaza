@@ -1,0 +1,1 @@
+/var/www/html/appspaza/app/views/settlements/show.blade.php

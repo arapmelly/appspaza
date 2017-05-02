@@ -8,13 +8,19 @@ class User extends Eloquent implements ConfideUserInterface
     use ConfideUser;
 
 
-    public function campaigns(){
-        return $this->hasMany('Campaign');
-    }
+    
 
 
     public function accounts(){
         return $this->hasMany('Account');
+    }
+
+
+    public static function getName($id){
+
+        $user = User::find($id);
+
+        return $user->email;
     }
 
 

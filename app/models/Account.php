@@ -16,8 +16,6 @@ class Account extends \Eloquent {
 	}
 
 
-	 public function campaigns(){
-        return $this->belongsToMany('Campaign');
-    }
+	 
 
 }

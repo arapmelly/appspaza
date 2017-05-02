@@ -1,0 +1,1 @@
+/var/www/html/appspaza/app/views/purchases/show.blade.php

@@ -49,7 +49,7 @@ class CampaignsController extends \BaseController {
 		$campaign->user_id = Session::get('user')->id;
 		$campaign->save();
 
-		return Redirect::to('/')->with('notice', 'campaign has been created');
+		return Redirect::to('campaigns/show/'.$campaign->id);
 	}
 
 	/**
@@ -74,8 +74,9 @@ class CampaignsController extends \BaseController {
 	public function edit($id)
 	{
 		$campaign = Campaign::find($id);
+		$regions = Region::all();
 
-		return View::make('campaigns.edit', compact('campaign'));
+		return View::make('campaigns.edit', compact('campaign', 'regions'));
 	}
 
 	/**
@@ -95,9 +96,14 @@ class CampaignsController extends \BaseController {
 			return Redirect::back()->withErrors($validator)->withInput();
 		}
 
-		$campaign->update($data);
+		$campaign->name = Input::get('name');
+		$campaign->start_date = Input::get('start_date');
+		$campaign->end_date = Input::get('end_date');
+		$campaign->location = Input::get('location');
+		$campaign->type = Input::get('type');
+		$campaign->update();
 
-		return Redirect::route('campaigns.index');
+		return Redirect::to('campaigns/show/'.$campaign->id);
 	}
 
 	/**

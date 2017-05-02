@@ -19,9 +19,12 @@
             <a href="{{URL::to('/')}}" data-ride="scroll">Accounts</a>
           </li>
 
+
            <li>
-            <a href="{{URL::to('purchases')}}" data-ride="scroll">Retweet Campaigns</a>
+            <a href="{{URL::to('settlements')}}" data-ride="scroll">Settlements</a>
           </li>
+
+           
 
 
 
@@ -33,11 +36,17 @@
         </ul>
         <ul class="nav navbar-nav navbar-right">
 
+        <li>
+          <button class="btn btn-success btn-addon"><i >KSH</i> {{Confide::user()->account_balance}}</button>
+        </li>
           
 
          <li>
             <div class="m-t-sm">
-              <a href="#" class="btn btn-link btn-sm">{{Confide::user()->email}}</a> 
+              <a href="#" class="btn btn-link btn-sm">{{Confide::user()->email}}</a>
+
+              
+
               <a href="{{URL::to('users/logout')}}" class="btn btn-sm btn-success btn-rounded m-l"><strong>Sign Out</strong></a>
             </div>
           </li>

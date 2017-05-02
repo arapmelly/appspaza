@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.user')
 @section('content')
 
 
@@ -17,21 +17,12 @@
 <div class="wrapper-md bg-white">
   <div class="row ">
 
-  @if (Session::get('notice'))
-            <div class="alert alert-success">{{{ Session::get('notice') }}}</div>
-        @endif
 
-        @if (Session::get('error'))
-            <div class="alert alert-warning">{{{ Session::get('error') }}}</div>
-        @endif
-
-
-    <div class="col-lg-12 ">
+    <div class="col-lg-10 ">
 
     <table class="table table-condensed table-bordered table-responsive table-hover table-stripped">
 
     <thead>
-      <th>Client</th>
       <th>Purchase Date</th>
       <th>Tweet</th>
       <th>Purchased Retweets</th>
@@ -39,13 +30,11 @@
       <th>Payment Code</th>
       <th>approved</th>
       <th>Closed</th>
-      <th></th>
     </thead>
 
     <tbody>
       @foreach($purchases as $purchase)
       <tr>
-        <td>{{User::getName($purchase->user_id)}}</td>
         <td>{{$purchase->created_at}}</td>
         <td>{{$purchase->tweet_id}}</td>
         <td>{{$purchase->retweet_count}}</td>
@@ -65,9 +54,6 @@
         @else
           Open
         @endif
-        </td>
-        <td>
-          <a href="{{URL::to('purchasesapprove/'.$purchase->id)}}" class="btn btn-info btn-sm"> Approve</a>
         </td>
       </tr>
       @endforeach

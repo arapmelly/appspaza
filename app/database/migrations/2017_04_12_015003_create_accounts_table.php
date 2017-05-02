@@ -21,6 +21,7 @@ class CreateAccountsTable extends Migration {
 			$table->string('access_secret')->nullable();
 			$table->string('type')->nullable();
 			$table->boolean('is_active')->default(true);
+			$table->integer('max_tweet')->default(100);
 			$table->string('image_url')->nullable();
 			$table->integer('user_id')->unsigned();
 			$table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

@@ -56,8 +56,13 @@ class AccountsController extends \BaseController {
 	public function show($id)
 	{
 		$account = Account::findOrFail($id);
+		
+		// Get tweets
+		//$tweets = Twitter::statusesUserTimeline($account->user_id);
 
-		return View::make('accounts.show', compact('account'));
+		 $tweets = Twitt::getUserTimeline(['screen_name' => $account->screen_name, 'count' => 20, 'format'=>'array']);
+		
+		return View::make('accounts.show', compact('account', 'tweets'));
 	}
 
 	/**

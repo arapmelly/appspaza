@@ -1,6 +1,6 @@
 <?php
 
-class Tweet extends \Eloquent {
+class Settlement extends \Eloquent {
 
 	// Add your validation rules here
 	public static $rules = [
@@ -9,10 +9,5 @@ class Tweet extends \Eloquent {
 
 	// Don't forget to fill this array
 	protected $fillable = [];
-
-
-	public function campaign(){
-		return $this->belongsTo('Campaign');
-	}
 
 }

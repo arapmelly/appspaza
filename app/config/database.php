@@ -55,7 +55,7 @@ return array(
 		'mysql' => array(
 			'driver'    => 'mysql',
 			'host'      => 'localhost',
-			'database'  => 'spazabuffer',
+			'database'  => 'spretweet',
 			'username'  => 'root',
 			'password'  => 'mysql',
 			'charset'   => 'utf8',
